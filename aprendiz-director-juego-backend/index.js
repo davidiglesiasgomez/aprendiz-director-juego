@@ -7,9 +7,8 @@ const cards_suits = ['♠', '♥', '♦', '♣']
 const cards_values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
 
 const runes = ['ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛟ', 'ᛞ']
-const runes_proto_germanic = ['Fehu', 'Ūruz', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛟ', 'ᛞ']
-const runes_old_english = ['Feoh', 'Ūr', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛟ', 'ᛞ']
-const runes_old_norse = ['Fé', 'Úr', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛟ', 'ᛞ']
+const runes_label = ['Fehu', 'Ur', 'Thurisaz', 'Ansuz', 'Raido', 'Kaunan', 'Gyfu', 'Wynn', 'Haglaz', 'Naudiz', 'Isaz', 'Jēran', 'Eihwaz', 'Peorð', 'Algiz', 'Sowilō', 'Tiwaz', 'Berkanan', 'Ehwaz', 'Mannaz', 'Laguz', 'Yngvi', 'Othala', 'Dagaz']
+const runes_meaning = ['livestock,wealth', 'water,rain', 'giant,thorn', 'god,oak,ash', 'ride,journey', 'torch,ulcer', 'gift,spear', 'joy', 'hail', 'need,hardship', 'ice', 'year,harvest,plenty', 'yew', 'pear-wood', 'elk', 'sun', 'tenacity', 'birch', 'horse', 'manm,human', 'lake,ocean,sea,water,waterfall', 'lord', 'heritage,estate', 'day,dawn']
 
 const directions = ['←', '→', '↑', '↓', '↖', '↗', '↘' , '↙', 'O']
 
