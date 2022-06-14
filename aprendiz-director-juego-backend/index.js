@@ -38,10 +38,12 @@ const altered_scene_values = [
 
 const altered_scene = () => {
   value = dice(6)
-  return altered_scene_values[value]
-    + ( value == 4 ? ': ' + scene_complication() : '' )
-    + ( value == 5 ? ': ' + pacing_moves() : '' )
-    + ( value == 6 ? ': ' + random_event() : '' )
+  return {
+    'altered_scene': altered_scene_values[value],
+    'scene_complication': scene_complication(),
+    'pacing_moves': pacing_moves(),
+    'random_event': random_event(),
+  }
 }
 
 const pacing_moves_values = [
@@ -56,8 +58,10 @@ const pacing_moves_values = [
 
 const pacing_moves = () => {
   value = dice(6)
-  return pacing_moves_values[value]
-    + ( value == 6 ? '. ' + random_event() : '' )
+  return {
+    'pacing_moves': pacing_moves_values[value],
+    'random_event': random_event()
+  }
 }
 
 const failure_moves_values = [
@@ -73,13 +77,13 @@ const failure_moves_values = [
 const failure_moves = () => {
   value = dice(6)
   return failure_moves_values[value]
-    + ( value == 6 ? '' : '' )
 }
 
 const random_event = () => {
-  return 'What happens: ' + action_focus()
-    + ' '
-    + 'Involving: ' + topic_focus()
+  return {
+    'what-happens': action_focus(),
+    'involving': topic_focus(),
+  }
 }
 
 const suits_meaning = {
@@ -189,9 +193,11 @@ const card = () => {
 }
 
 const generic_generator = () => {
-  return 'What it does: ' + action_focus()
-    + ' How it looks: ' + detail_focus()
-    + ' How significant: ' + how()
+  return {
+    'what_it_does': action_focus(),
+    'how_it_looks': detail_focus(),
+    'how_significant': how()
+  }
 }
 
 const objective_values = [
@@ -237,9 +243,11 @@ const rewards = () => {
 }
 
 const plot_hook_generator = () => {
-  return 'Objective: ' + objective()
-    + ' Adversaries: ' + adversaries()
-    + ' Rewards: ' + rewards()
+  return {
+    'objective': objective(),
+    'adversaries': adversaries(),
+    'rewards': rewards()
+  }
 }
 
 const npc_identity_values = {
@@ -295,18 +303,24 @@ const npc_notable_feature_values = [
 ]
 
 const npc_notable_feature = () => {
-  return npc_notable_feature_values[dice(6)]
-    + '. ' + detail_focus()
+  return {
+    'npc_notable_feature': npc_notable_feature_values[dice(6)],
+    'detail_focus': detail_focus()
+  }
 }
 
 const npc_current_situation = () => {
-  return 'Attitude to PCs: ' + how()
-    + ' Conversation: ' + topic_focus()
+  return {
+    'attitude_to_pcs': how(),
+    'conversation': topic_focus(),
+  }
 }
 
 const dungeon_theme = () => {
-  return 'How it looks: ' + detail_focus()
-    + ' How it is used: ' + action_focus()
+  return {
+    'how_it_looks': detail_focus(),
+    'how_it_is_used': action_focus(),
+    }
 }
 
 const dungeon_location_values = [
@@ -391,8 +405,10 @@ const hex_contents_values = [
 
 const hex_contents = () => {
   value = dice(6)
-  return hex_contents_values[value]
-  + ( value == 6 ? '. ' + hex_features() : '' )
+  return {
+    'hex_contents': hex_contents_values[value],
+    'hex_features': hex_features(),
+  }
 }
 
 const hex_features_values = [
@@ -421,8 +437,26 @@ const hex_event_values = [
 
 const hex_event = () => {
   value = dice(6)
-  return hex_event_values[value]
-    + ( value >= 5 ? '. ' + random_event() : '' )
+  return {
+    'hex_event': hex_event_values[value],
+    'random_event': random_event(),
+  }
+}
+
+const rune = () => {
+  value = random.int(0, 23)
+  return {
+    'rune': runes[value],
+    'label': runes_label[value],
+    'meaning': runes_meaning[value],
+  }
+}
+
+const direction = () => {
+  value = random.int(0, 8)
+  return {
+    'direction': directions[value]
+  }
 }
 
 const generator = () => {
@@ -437,8 +471,8 @@ const generator = () => {
     'd20': dice(20),
     'd100': dice(100),
     'card': card(),
-    'rune': runes[random.int(0, 23)],
-    'direction': directions[random.int(0, 8)],
+    'rune': rune(),
+    'direction': direction(),
     'scene_complication': scene_complication(),
     'altered_scene': ( dice(6) >= 5 ? altered_scene() : '' ),
     'oracle_yes_no_likely': yes_no(3) + yes_no_mod(),
