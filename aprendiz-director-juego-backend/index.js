@@ -40,9 +40,9 @@ const altered_scene = () => {
   value = dice(6)
   return {
     'altered_scene': altered_scene_values[value],
-    'scene_complication': scene_complication(),
-    'pacing_moves': pacing_moves(),
-    'random_event': random_event(),
+    'scene_complication': ( value === 4 ? scene_complication() : '' ),
+    'pacing_moves': ( value === 5 ? pacing_moves() : '' ),
+    'random_event': ( value === 6 ? random_event() : '' ),
   }
 }
 
@@ -60,7 +60,7 @@ const pacing_moves = () => {
   value = dice(6)
   return {
     'pacing_moves': pacing_moves_values[value],
-    'random_event': random_event()
+    'random_event': ( value === 6 ? random_event() : '' ),
   }
 }
 
@@ -111,7 +111,7 @@ const action_focus_values = {
 
 const action_focus = () => {
   value = card()
-  return '(' + value + ') ' + action_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return action_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
 }
 
 const detail_focus_values = {
@@ -132,7 +132,7 @@ const detail_focus_values = {
 
 const detail_focus = () => {
   value = card()
-  return '(' + value + ') ' + detail_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return detail_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
 }
 
 const topic_focus_values = {
@@ -153,7 +153,7 @@ const topic_focus_values = {
 
 const topic_focus = () => {
   value = card()
-  return '(' + value + ') ' + topic_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return topic_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
 }
 
 const dice = (dice) => {
@@ -268,7 +268,7 @@ const npc_identity_values = {
 
 const npc_identity = () => {
   value = card()
-  return '(' + value + ') ' + npc_identity_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return npc_identity_values[value[0]] + '. ' + suits_meaning[value[1]]
 }
 
 const npc_goal_values = {
@@ -289,7 +289,7 @@ const npc_goal_values = {
 
 const npc_goal = () => {
   value = card()
-  return '(' + value + ') ' + npc_goal_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return npc_goal_values[value[0]] + '. ' + suits_meaning[value[1]]
 }
 
 const npc_notable_feature_values = [
@@ -407,7 +407,7 @@ const hex_contents = () => {
   value = dice(6)
   return {
     'hex_contents': hex_contents_values[value],
-    'hex_features': hex_features(),
+    'hex_features': ( value === 6 ? hex_features() : '' ),
   }
 }
 
@@ -439,7 +439,7 @@ const hex_event = () => {
   value = dice(6)
   return {
     'hex_event': hex_event_values[value],
-    'random_event': random_event(),
+    'random_event': ( value === 5 || value === 6 ? random_event() : '' ),
   }
 }
 
