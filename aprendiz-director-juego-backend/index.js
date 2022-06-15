@@ -1,5 +1,13 @@
 const express = require('express')
 const random = require('random')
+const path = require('path')
+const { I18n } = require('i18n')
+
+const i18n = new I18n({
+  locales: ['en', 'es'],
+  directory: path.join(__dirname, 'locales')
+})
+
 const app = express()
 
 const cards_suits = ['♠', '♥', '♦', '♣']
@@ -81,7 +89,7 @@ const failure_moves = () => {
 
 const random_event = () => {
   return {
-    'what-happens': action_focus(),
+    'what_happens': action_focus(),
     'involving': topic_focus(),
   }
 }
@@ -111,7 +119,10 @@ const action_focus_values = {
 
 const action_focus = () => {
   value = card()
-  return action_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return {
+    'value': action_focus_values[value[0]],
+    'suit': suits_meaning[value[1]],
+  }
 }
 
 const detail_focus_values = {
@@ -132,7 +143,10 @@ const detail_focus_values = {
 
 const detail_focus = () => {
   value = card()
-  return detail_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return {
+    'value': detail_focus_values[value[0]],
+    'suit': suits_meaning[value[1]],
+  }
 }
 
 const topic_focus_values = {
@@ -153,7 +167,10 @@ const topic_focus_values = {
 
 const topic_focus = () => {
   value = card()
-  return topic_focus_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return {
+    'value': topic_focus_values[value[0]],
+    'suit': suits_meaning[value[1]],
+  }
 }
 
 const dice = (dice) => {
@@ -268,7 +285,10 @@ const npc_identity_values = {
 
 const npc_identity = () => {
   value = card()
-  return npc_identity_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return {
+    'value': npc_identity_values[value[0]],
+    'suit': suits_meaning[value[1]],
+  }
 }
 
 const npc_goal_values = {
@@ -289,7 +309,10 @@ const npc_goal_values = {
 
 const npc_goal = () => {
   value = card()
-  return npc_goal_values[value[0]] + '. ' + suits_meaning[value[1]]
+  return {
+    'value': npc_goal_values[value[0]],
+    'suit': suits_meaning[value[1]],
+  }
 }
 
 const npc_notable_feature_values = [
@@ -498,18 +521,97 @@ const generator = () => {
     'dungeon_total_exits': dungeon_total_exits(),
     'hex_terrain': hex_terrain(),
     'hex_contents': hex_contents(),
-    'hex_features': hex_features(),
+    // 'hex_features': hex_features(),
     'hex_event': hex_event(),
   }
 
 }
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
+  i18n.init(request, response)
+  response.send('<h1>' + response.__('Hello World!') + '</h1>')
 })
 
 app.get('/oracle', (request, response) => {
-  response.json(generator())
+  i18n.init(request, response)
+  const oracle = generator()
+  oracle.scene_complication = response.__(oracle.scene_complication)
+  oracle.altered_scene.altered_scene = response.__(oracle.altered_scene.altered_scene)
+  oracle.altered_scene.scene_complication = response.__(oracle.altered_scene.scene_complication)
+  if (oracle.altered_scene.pacing_moves) {
+    oracle.altered_scene.pacing_moves.pacing_moves = response.__(oracle.altered_scene.pacing_moves.pacing_moves)
+  }
+  if (oracle.altered_scene.pacing_moves && oracle.altered_scene.pacing_moves.random_event) {
+    oracle.altered_scene.pacing_moves.random_event.what_happens.value = response.__(oracle.altered_scene.pacing_moves.random_event.what_happens.value)
+    oracle.altered_scene.pacing_moves.random_event.what_happens.suit = response.__(oracle.altered_scene.pacing_moves.random_event.what_happens.suit)
+    oracle.altered_scene.pacing_moves.random_event.involving.value = response.__(oracle.altered_scene.pacing_moves.random_event.involving.value)
+    oracle.altered_scene.pacing_moves.random_event.involving.suit = response.__(oracle.altered_scene.pacing_moves.random_event.involving.suit)
+  }
+  if (oracle.altered_scene.random_event) {
+    oracle.altered_scene.random_event.what_happens.value = response.__(oracle.altered_scene.random_event.what_happens.value)
+    oracle.altered_scene.random_event.what_happens.suit = response.__(oracle.altered_scene.random_event.what_happens.suit)
+    oracle.altered_scene.random_event.involving.value = response.__(oracle.altered_scene.random_event.involving.value)
+    oracle.altered_scene.random_event.involving.suit = response.__(oracle.altered_scene.random_event.involving.suit)
+  }
+  oracle.oracle_yes_no_likely = response.__(oracle.oracle_yes_no_likely)
+  oracle.oracle_yes_no_even = response.__(oracle.oracle_yes_no_even)
+  oracle.oracle_yes_no_unlikely = response.__(oracle.oracle_yes_no_unlikely)
+  oracle.oracle_how = response.__(oracle.oracle_how)
+  oracle.pacing_moves.pacing_moves = response.__(oracle.pacing_moves.pacing_moves)
+  if (oracle.pacing_moves.random_event) {
+    oracle.pacing_moves.random_event.what_happens.value = response.__(oracle.pacing_moves.random_event.what_happens.value)
+    oracle.pacing_moves.random_event.what_happens.suit = response.__(oracle.pacing_moves.random_event.what_happens.suit)
+    oracle.pacing_moves.random_event.involving.value = response.__(oracle.pacing_moves.random_event.involving.value)
+    oracle.pacing_moves.random_event.involving.suit = response.__(oracle.pacing_moves.random_event.involving.suit)
+  }
+  oracle.failure_moves = response.__(oracle.failure_moves)
+  oracle.random_event.what_happens.value = response.__(oracle.random_event.what_happens.value)
+  oracle.random_event.what_happens.suit = response.__(oracle.random_event.what_happens.suit)
+  oracle.random_event.involving.value = response.__(oracle.random_event.involving.value)
+  oracle.random_event.involving.suit = response.__(oracle.random_event.involving.suit)
+  oracle.oracle_action_focus.value = response.__(oracle.oracle_action_focus.value)
+  oracle.oracle_action_focus.suit = response.__(oracle.oracle_action_focus.suit)
+  oracle.oracle_detail_focus.value = response.__(oracle.oracle_detail_focus.value)
+  oracle.oracle_detail_focus.suit = response.__(oracle.oracle_detail_focus.suit)
+  oracle.oracle_topic_focus.value = response.__(oracle.oracle_topic_focus.value)
+  oracle.oracle_topic_focus.suit = response.__(oracle.oracle_topic_focus.suit)
+  oracle.generic_generator.what_it_does.value = response.__(oracle.generic_generator.what_it_does.value)
+  oracle.generic_generator.what_it_does.suit = response.__(oracle.generic_generator.what_it_does.suit)
+  oracle.generic_generator.how_it_looks.value = response.__(oracle.generic_generator.how_it_looks.value)
+  oracle.generic_generator.how_it_looks.suit = response.__(oracle.generic_generator.how_it_looks.suit)
+  oracle.generic_generator.how_significant = response.__(oracle.generic_generator.how_significant)
+  oracle.plot_hook_generator.objective = response.__(oracle.plot_hook_generator.objective)
+  oracle.plot_hook_generator.adversaries = response.__(oracle.plot_hook_generator.adversaries)
+  oracle.plot_hook_generator.rewards = response.__(oracle.plot_hook_generator.rewards)
+  oracle.npc_identity.value = response.__(oracle.npc_identity.value)
+  oracle.npc_identity.suit = response.__(oracle.npc_identity.suit)
+  oracle.npc_goal.value = response.__(oracle.npc_goal.value)
+  oracle.npc_goal.suit = response.__(oracle.npc_goal.suit)
+  oracle.npc_notable_feature.npc_notable_feature = response.__(oracle.npc_notable_feature.npc_notable_feature)
+  oracle.npc_notable_feature.detail_focus.value = response.__(oracle.npc_notable_feature.detail_focus.value)
+  oracle.npc_notable_feature.detail_focus.suit = response.__(oracle.npc_notable_feature.detail_focus.suit)
+  oracle.npc_current_situation.attitude_to_pcs = response.__(oracle.npc_current_situation.attitude_to_pcs)
+  oracle.npc_current_situation.conversation.value = response.__(oracle.npc_current_situation.conversation.value)
+  oracle.npc_current_situation.conversation.suit = response.__(oracle.npc_current_situation.conversation.suit)
+  oracle.dungeon_theme.how_it_looks.value = response.__(oracle.dungeon_theme.how_it_looks.value)
+  oracle.dungeon_theme.how_it_looks.suit = response.__(oracle.dungeon_theme.how_it_looks.suit)
+  oracle.dungeon_theme.how_it_is_used.value = response.__(oracle.dungeon_theme.how_it_is_used.value)
+  oracle.dungeon_theme.how_it_is_used.suit = response.__(oracle.dungeon_theme.how_it_is_used.suit)
+  oracle.dungeon_location = response.__(oracle.dungeon_location)
+  oracle.dungeon_encounter = response.__(oracle.dungeon_encounter)
+  oracle.dungeon_object = response.__(oracle.dungeon_object)
+  oracle.dungeon_total_exits = response.__(oracle.dungeon_total_exits)
+  oracle.hex_terrain = response.__(oracle.hex_terrain)
+  oracle.hex_contents.hex_contents = response.__(oracle.hex_contents.hex_contents)
+  oracle.hex_contents.hex_features = response.__(oracle.hex_contents.hex_features)
+  oracle.hex_event.hex_event = response.__(oracle.hex_event.hex_event)
+  if (oracle.hex_event.random_event) {
+    oracle.hex_event.random_event.what_happens.value = response.__(oracle.hex_event.random_event.what_happens.value)
+    oracle.hex_event.random_event.what_happens.suit = response.__(oracle.hex_event.random_event.what_happens.suit)
+    oracle.hex_event.random_event.involving.value = response.__(oracle.hex_event.random_event.involving.value)
+    oracle.hex_event.random_event.involving.suit = response.__(oracle.hex_event.random_event.involving.suit)
+  }
+  response.json(oracle)
 })
 
 const PORT = 3001

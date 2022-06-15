@@ -1,0 +1,2 @@
+GET http://localhost:3001/oracle
+Accept-Language: es-ES;q=0.8,es;q=0.6,en;q=0.4
