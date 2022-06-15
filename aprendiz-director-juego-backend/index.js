@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const random = require('random')
 const path = require('path')
 const { I18n } = require('i18n')
@@ -9,6 +10,8 @@ const i18n = new I18n({
 })
 
 const app = express()
+
+app.use(cors())
 
 const cards_suits = ['♠', '♥', '♦', '♣']
 
