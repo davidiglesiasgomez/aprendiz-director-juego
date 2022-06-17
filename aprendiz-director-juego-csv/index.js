@@ -73,7 +73,7 @@ cards.then(cards => {
   // console.log('cards', cards)
 
   const writer = csvWriter.createObjectCsvWriter({
-    path: path.resolve(__dirname, 'cards.csv'),
+    path: path.resolve(__dirname, '../nandeck/cards.csv'),
     header: [
       { id: 'number', title: 'number' },
       { id: 'd4', title: 'd4' },
