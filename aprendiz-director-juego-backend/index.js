@@ -485,6 +485,13 @@ const direction = () => {
   }
 }
 
+const dice100 = () => {
+    value = dice(100).toString()
+    if (value === '100') return '00'
+    if (value.length === 1) return '0' + value
+    return value
+}
+
 const generator = () => {
   random.use(Math.round(new Date().getTime()/1000))
 
@@ -495,7 +502,7 @@ const generator = () => {
     'd10': dice(10),
     'd12': dice(12),
     'd20': dice(20),
-    'd100': dice(100),
+    'd100': dice100(),
     'card': card(),
     'rune': rune(),
     'direction': direction(),
