@@ -3,8 +3,12 @@ const csvWriter = require('csv-writer')
 const path = require('path')
 const { encode } = require('html-entities')
 
-const codificar = (cadena) => {
+const codificarHex = (cadena) => {
     return encode(cadena, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'})
+}
+
+const codificarTexto = (cadena) => {
+    return cadena
 }
 
 const cards_suits = ['♥', '♠', '♦', '♣']
@@ -41,23 +45,23 @@ const oracle = async () => {
           'd12': response.data.d12,
           'd20': response.data.d20,
           'd100': response.data.d100,
-          'card': codificar(baraja[(i-1)]),
-          'rune': codificar(response.data.rune.rune),
-          'rune_label': codificar(response.data.rune.label),
-          'direction': codificar(response.data.direction.direction),
-          'scene_complication': codificar(response.data.scene_complication),
-          'altered_scene': codificar(response.data.altered_scene.altered_scene) || '',
-          'oracle_yes_no_likely': codificar(response.data.oracle_yes_no_likely),
-          'oracle_yes_no_even': codificar(response.data.oracle_yes_no_even),
-          'oracle_yes_no_unlikely': codificar(response.data.oracle_yes_no_unlikely),
-          'oracle_how': codificar(response.data.oracle_how),
-          'pacing_moves': codificar(response.data.pacing_moves.pacing_moves),
-          'failure_moves': codificar(response.data.failure_moves),
-          'random_event_what_happens': codificar(`${response.data.random_event.what_happens.value}. ${response.data.random_event.what_happens.suit}`),
-          'random_event_involving': codificar(`${response.data.random_event.involving.value}. ${response.data.random_event.involving.suit}`),
-          'oracle_action_focus': codificar(`${response.data.oracle_action_focus.value}. ${response.data.oracle_action_focus.suit}`),
-          'oracle_detail_focus': codificar(`${response.data.oracle_detail_focus.value}. ${response.data.oracle_detail_focus.suit}`),
-          'oracle_topic_focus': codificar(`${response.data.oracle_topic_focus.value}. ${response.data.oracle_topic_focus.suit}`),
+          'card': codificarHex(baraja[(i-1)]),
+          'rune': codificarHex(response.data.rune.rune),
+          'rune_label': codificarHex(response.data.rune.label),
+          'direction': codificarHex(response.data.direction.direction),
+          'scene_complication': codificarTexto(response.data.scene_complication),
+          'altered_scene': codificarTexto(response.data.altered_scene.altered_scene) || '',
+          'oracle_yes_no_likely': codificarTexto(response.data.oracle_yes_no_likely),
+          'oracle_yes_no_even': codificarTexto(response.data.oracle_yes_no_even),
+          'oracle_yes_no_unlikely': codificarTexto(response.data.oracle_yes_no_unlikely),
+          'oracle_how': codificarTexto(response.data.oracle_how),
+          'pacing_moves': codificarTexto(response.data.pacing_moves.pacing_moves),
+          'failure_moves': codificarTexto(response.data.failure_moves),
+          'random_event_what_happens': codificarTexto(`${response.data.random_event.what_happens.value}. ${response.data.random_event.what_happens.suit}`),
+          'random_event_involving': codificarTexto(`${response.data.random_event.involving.value}. ${response.data.random_event.involving.suit}`),
+          'oracle_action_focus': codificarTexto(`${response.data.oracle_action_focus.value}. ${response.data.oracle_action_focus.suit}`),
+          'oracle_detail_focus': codificarTexto(`${response.data.oracle_detail_focus.value}. ${response.data.oracle_detail_focus.suit}`),
+          'oracle_topic_focus': codificarTexto(`${response.data.oracle_topic_focus.value}. ${response.data.oracle_topic_focus.suit}`),
         })
 
     } catch (err) {
@@ -74,6 +78,7 @@ cards.then(cards => {
 
   const writer = csvWriter.createObjectCsvWriter({
     path: path.resolve(__dirname, '../nandeck/cards.csv'),
+    encoding: 'ascii',
     header: [
       { id: 'number', title: 'number' },
       { id: 'd4', title: 'd4' },
