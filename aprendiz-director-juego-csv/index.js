@@ -51,6 +51,8 @@ baraja.push('J')
 // console.log('baraja', baraja)
 
 const numero_cartas = 54
+// const numero_cartas = 108
+// const numero_cartas = 162
 
 const oracle = async () => {
   const retorno = []
@@ -72,7 +74,7 @@ const oracle = async () => {
           'd12': response.data.d12,
           'd20': response.data.d20,
           'd100': response.data.d100,
-          'card': codificarHex(baraja[(i-1)]),
+          'card': codificarHex(baraja[((i-1)%baraja.length)]),
           'rune': codificarHex(response.data.rune.rune),
           'rune_label': codificarHex(response.data.rune.label),
           'direction': codificarHex(response.data.direction.direction),
