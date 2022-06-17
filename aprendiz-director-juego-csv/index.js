@@ -2,7 +2,20 @@ const axios = require('axios').default
 const csvWriter = require('csv-writer')
 const path = require('path')
 const { encode } = require('html-entities')
-const numero_cartas = 52
+
+const cards_suits = ['♥', '♠', '♦', '♣']
+const cards_values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
+const baraja = []
+for (let i=0; i<cards_suits.length; i++) {
+  for (let j=0; j<cards_values.length; j++) {
+    baraja.push(cards_values[j] + cards_suits[i])
+  }
+}
+baraja.push('J')
+baraja.push('J')
+// console.log('baraja', baraja)
+
+const numero_cartas = 54
 
 const oracle = async () => {
   const retorno = []
@@ -24,7 +37,8 @@ const oracle = async () => {
           'd12': response.data.d12,
           'd20': response.data.d20,
           'd100': response.data.d100,
-          'card': encode(response.data.card, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'}),
+          // 'card': encode(response.data.card, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'}),
+          'card': encode(baraja[(i-1)], {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'}),
           'rune': encode(response.data.rune.rune, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'}),
           'rune_label': encode(response.data.rune.label, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'}),
           'direction': encode(response.data.direction.direction, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'}),
