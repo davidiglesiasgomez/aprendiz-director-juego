@@ -22,6 +22,13 @@ const runes_label = ['Fehu', 'Ur', 'Thurisaz', 'Ansuz', 'Raido', 'Kaunan', 'Gyfu
 const runes_meaning = ['livestock,wealth', 'water,rain', 'giant,thorn', 'god,oak,ash', 'ride,journey', 'torch,ulcer', 'gift,spear', 'joy', 'hail', 'need,hardship', 'ice', 'year,harvest,plenty', 'yew', 'pear-wood', 'elk', 'sun', 'tenacity', 'birch', 'horse', 'manm,human', 'lake,ocean,sea,water,waterfall', 'lord', 'heritage,estate', 'day,dawn']
 
 const directions = ['←', '→', '↑', '↓', '↖', '↗', '↘' , '↙', 'O']
+const directions_label = ['W', 'E', 'N', 'S', 'NW', 'NE', 'SE', 'SW', '']
+
+const elements = ['🔥', '🌊', '💨', '⛰']
+const elements_label = ['Fire', 'Water', 'Air', 'Earth']
+
+const weather_options = ['☀️', '⛅', '🌧️', '⛈️', '🌨️', '🌩️', '🌫️', '❄️', '☁️', '🌪️', '🌈', '💨', '🌀']
+const weather_options_label = ['Sun', 'Sun behind Cloud', 'Cloud with Rain', 'Cloud with Lightning and Rain', 'Cloud with Snow', 'Cloud with Lightning', 'Fog', 'Snow', 'Cloud', 'Tornado', 'Rainbow', 'Wind', 'Cyclone']
 
 const scene_complication_values = [
   '',
@@ -478,10 +485,27 @@ const rune = () => {
   }
 }
 
+const element = () => {
+  value = random.int(0, 3)
+  return {
+    'element': elements[value],
+    'label': elements_label[value],
+  }
+}
+
+const weather = () => {
+  value = random.int(0, (weather_options.length-1))
+  return {
+    'weather': weather_options[value],
+    'label': weather_options_label[value],
+  }
+}
+
 const direction = () => {
   value = random.int(0, 8)
   return {
-    'direction': directions[value]
+    'direction': directions[value],
+    'label': directions_label[value],
   }
 }
 
@@ -505,6 +529,8 @@ const generator = () => {
     'd100': dice100(),
     'card': card(),
     'rune': rune(),
+    'element': element(),
+    'weather': weather(),
     'direction': direction(),
     'scene_complication': scene_complication(),
     'altered_scene': ( dice(6) >= 5 ? altered_scene() : '' ),
@@ -545,6 +571,8 @@ app.get('/', (request, response) => {
 app.get('/oracle', (request, response) => {
   i18n.init(request, response)
   const oracle = generator()
+  oracle.element.label = response.__(oracle.element.label)
+  oracle.weather.label = response.__(oracle.weather.label)
   oracle.scene_complication = response.__(oracle.scene_complication)
   oracle.altered_scene.altered_scene = response.__(oracle.altered_scene.altered_scene)
   oracle.altered_scene.scene_complication = response.__(oracle.altered_scene.scene_complication)
