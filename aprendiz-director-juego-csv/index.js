@@ -4,11 +4,38 @@ const path = require('path')
 const { encode } = require('html-entities')
 
 const codificarHex = (cadena) => {
-    return encode(cadena, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'})
+  return encode(cadena, {mode: 'nonAsciiPrintable', numeric: 'hexadecimal'})
 }
 
 const codificarTexto = (cadena) => {
-    return cadena
+  return cadena
+}
+
+const npc = (data) => {
+  return data.npc_identity.value
+    + '. ' + data.npc_identity.suit
+    + '. ' + data.npc_goal.value
+    + '. ' + data.npc_goal.suit
+    + '. ' + data.npc_notable_feature.npc_notable_feature
+    + '. ' + data.npc_notable_feature.detail_focus.value
+    + '. ' + data.npc_notable_feature.detail_focus.suit
+    + '. ' + data.npc_current_situation.attitude_to_pcs
+    + '. ' + data.npc_current_situation.conversation.value
+    + '. ' + data.npc_current_situation.conversation.suit
+}
+
+const hex = (data) => {
+  return data.hex_terrain
+    + ( data.hex_contents.hex_contents !== 'Característica' ? '. ' + data.hex_contents.hex_contents : '' )
+    + ( data.hex_contents.hex_contents === 'Característica' ? '. ' + data.hex_contents.hex_features : '' )
+    + ( data.hex_event.hex_event === 'Evento Aleatorio' ? '. ' + data.hex_event.hex_event : '' )
+}
+
+const dungeon = (data) => {
+  return data.dungeon_location
+    + ( data.dungeon_encounter !== 'Ninguno' ? '. ' + data.dungeon_encounter : '' )
+    + '. ' + data.dungeon_object
+    + '. ' + data.dungeon_total_exits
 }
 
 const cards_suits = ['♥', '♠', '♦', '♣']
@@ -62,6 +89,16 @@ const oracle = async () => {
           'oracle_action_focus': codificarTexto(`${response.data.oracle_action_focus.value}. ${response.data.oracle_action_focus.suit}`),
           'oracle_detail_focus': codificarTexto(`${response.data.oracle_detail_focus.value}. ${response.data.oracle_detail_focus.suit}`),
           'oracle_topic_focus': codificarTexto(`${response.data.oracle_topic_focus.value}. ${response.data.oracle_topic_focus.suit}`),
+          'plot_hook_generator': codificarTexto(`${response.data.plot_hook_generator.objective}. ${response.data.plot_hook_generator.adversaries}. ${response.data.plot_hook_generator.rewards}`),
+          'npc_identity': codificarTexto(`${response.data.npc_identity.value}. ${response.data.npc_identity.suit}`),
+          'npc_goal': codificarTexto(`${response.data.npc_goal.value}. ${response.data.npc_goal.suit}`),
+          'npc_notable_feature': codificarTexto(`${response.data.npc_notable_feature.npc_notable_feature}. ${response.data.npc_notable_feature.detail_focus.value}. ${response.data.npc_notable_feature.detail_focus.suit}`),
+          'npc_attitude_to_pcs': codificarTexto(`${response.data.npc_current_situation.attitude_to_pcs}`),
+          'npc_conversation': codificarTexto(`${response.data.npc_current_situation.conversation.value}. ${response.data.npc_current_situation.conversation.suit}`),
+          'dungeon': codificarTexto(dungeon(response.data)),
+          'hex': codificarTexto(hex(response.data)),
+          'dungeon_theme_how_it_looks': codificarTexto(`${response.data.dungeon_theme.how_it_looks.value}. ${response.data.dungeon_theme.how_it_looks.suit}`),
+          'dungeon_theme_how_it_is_used': codificarTexto(`${response.data.dungeon_theme.how_it_is_used.value}. ${response.data.dungeon_theme.how_it_is_used.suit}`),
         })
 
     } catch (err) {
@@ -105,6 +142,16 @@ cards.then(cards => {
       { id: 'oracle_action_focus', title: 'oracle_action_focus' },
       { id: 'oracle_detail_focus', title: 'oracle_detail_focus' },
       { id: 'oracle_topic_focus', title: 'oracle_topic_focus' },
+      { id: 'plot_hook_generator', title: 'plot_hook_generator' },
+      { id: 'npc_identity', title: 'npc_identity' },
+      { id: 'npc_goal', title: 'npc_goal' },
+      { id: 'npc_notable_feature', title: 'npc_notable_feature' },
+      { id: 'npc_attitude_to_pcs', title: 'npc_attitude_to_pcs' },
+      { id: 'npc_conversation', title: 'npc_conversation' },
+      { id: 'dungeon', title: 'dungeon' },
+      { id: 'hex', title: 'hex' },
+      { id: 'dungeon_theme_how_it_looks', title: 'dungeon_theme_how_it_looks' },
+      { id: 'dungeon_theme_how_it_is_used', title: 'dungeon_theme_how_it_is_used' },
     ],
   })
 
