@@ -105,10 +105,10 @@ const random_event = () => {
 }
 
 const suits_meaning = {
-  '♠': 'Physical (appearance, existence)',
-  '♥': 'Technical (mental, operation)',
-  '♦': 'Mystical (meaning, capability)',
-  '♣': 'Social (personal, connection)'
+  '♠': 'Physical',
+  '♥': 'Technical',
+  '♦': 'Mystical',
+  '♣': 'Social'
 }
 
 const action_focus_values = {

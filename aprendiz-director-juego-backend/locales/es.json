@@ -174,5 +174,9 @@
 	"Cyclone": "Ciclón",
 	"Cloud with Lightning and Rain": "Nubes con Rayos y Lluvia",
 	"Sun behind Cloud": "Sol detrás Nubes",
-	"Fog": "Niebla"
+	"Fog": "Niebla",
+	"Physical": "Físico",
+	"Technical": "Técnico",
+	"Mystical": "Místico",
+	"Social": "Social"
 }
