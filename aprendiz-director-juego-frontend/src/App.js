@@ -12,7 +12,7 @@ function App() {
       })
   }, [])
 
-  console.log('oracle', oracle)
+  // console.log('oracle', oracle)
 
   if (oracle === null) {
     return <><h1>One Page Solo Engine</h1>Loading...</>
@@ -127,6 +127,19 @@ function App() {
       <p>Dungeon&nbsp;
         {( oracle.dungeon_theme ? <><br />¿Cómo se ve? <strong>{oracle.dungeon_theme.how_it_looks.value} ({oracle.dungeon_theme.how_it_looks.suit})</strong></> : '' )}
         {( oracle.dungeon_theme ? <><br />¿Para qué es usado? <strong>{oracle.dungeon_theme.how_it_is_used.value} ({oracle.dungeon_theme.how_it_is_used.suit})</strong></> : '' )}
+        {( oracle.dungeon_location ? <><br />Lugar <strong>{oracle.dungeon_location}</strong></> : '' )}
+        {( oracle.dungeon_encounter ? <><br />Encuentro <strong>{oracle.dungeon_encounter}</strong></> : '' )}
+        {( oracle.dungeon_object ? <><br />Objeto <strong>{oracle.dungeon_object}</strong></> : '' )}
+        {( oracle.dungeon_total_exits ? <><br />Salidas totales <strong>{oracle.dungeon_total_exits}</strong></> : '' )}
+      </p>
+
+      <p>Generador de hexágonos&nbsp;
+        {( oracle.hex_terrain ? <><br />Terreno <strong>{oracle.hex_terrain}</strong></> : '' )}
+        {( oracle.hex_contents ? <><br />Contenido <strong>{oracle.hex_contents.hex_contents}</strong></> : '' )}
+        {( oracle.hex_contents ? <>. <strong>{oracle.hex_contents.hex_features}</strong></> : '' )}
+        {( oracle.hex_event ? <><br />Evento <strong>{oracle.hex_event.hex_event}</strong></> : '' )}
+        {( oracle.hex_event.random_event ? <><br />¿Qué ocurre? <strong>{oracle.hex_event.random_event.what_happens.value} ({oracle.hex_event.random_event.what_happens.suit})</strong></> : '' )}
+        {( oracle.hex_event.random_event ? <><br />Implicando a <strong>{oracle.hex_event.random_event.involving.value} ({oracle.hex_event.random_event.involving.suit})</strong></> : '' )}
       </p>
 
 
