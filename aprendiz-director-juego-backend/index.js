@@ -557,6 +557,7 @@ const generator = () => {
   random.use(Math.round(new Date().getTime()/1000))
 
   return {
+    'd3': dice(3),
     'd4': dice(4),
     'd6': dice(6),
     'd8': dice(8),
