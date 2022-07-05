@@ -21,14 +21,29 @@ const runes = ['ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', '�
 const runes_label = ['Fehu', 'Ur', 'Thurisaz', 'Ansuz', 'Raido', 'Kaunan', 'Gyfu', 'Wynn', 'Haglaz', 'Naudiz', 'Isaz', 'Jēran', 'Eihwaz', 'Peorð', 'Algiz', 'Sowilō', 'Tiwaz', 'Berkanan', 'Ehwaz', 'Mannaz', 'Laguz', 'Yngvi', 'Othala', 'Dagaz']
 const runes_meaning = ['livestock,wealth', 'water,rain', 'giant,thorn', 'god,oak,ash', 'ride,journey', 'torch,ulcer', 'gift,spear', 'joy', 'hail', 'need,hardship', 'ice', 'year,harvest,plenty', 'yew', 'pear-wood', 'elk', 'sun', 'tenacity', 'birch', 'horse', 'manm,human', 'lake,ocean,sea,water,waterfall', 'lord', 'heritage,estate', 'day,dawn']
 
-const directions = ['←', '→', '↑', '↓', '↖', '↗', '↘' , '↙', 'O']
-const directions_label = ['W', 'E', 'N', 'S', 'NW', 'NE', 'SE', 'SW', '']
+const directions = ['←', '→', '↑', '↓', '↖', '↗', '↘' , '↙', 'O', '-']
+const directions_label = ['W', 'E', 'N', 'S', 'NW', 'NE', 'SE', 'SW', 'DIRECT', 'MISS']
 
 const elements = ['🔥', '🌊', '💨', '⛰']
 const elements_label = ['Fire', 'Water', 'Air', 'Earth']
 
 const weather_options = ['☀️', '⛅', '🌧️', '⛈️', '🌨️', '🌩️', '🌫️', '❄️', '☁️', '🌪️', '🌈', '💨', '🌀']
 const weather_options_label = ['Sun', 'Sun behind Cloud', 'Cloud with Rain', 'Cloud with Lightning and Rain', 'Cloud with Snow', 'Cloud with Lightning', 'Fog', 'Snow', 'Cloud', 'Tornado', 'Rainbow', 'Wind', 'Cyclone']
+
+const symbols_options = ['🏰', '👑', '💗', '💀', '🌞', '🌜', '🗡️', '🛡️', '🎯', '✨']
+const symbols_options_label = ['Tower', 'Crown', 'Heart', 'Skull', 'Sun', 'Moon', 'Sword', 'Shield', 'Target', 'Wand']
+const symbols_options_meaning = [
+    'Significant obstacle; probably static in nature.',
+    'An important individual, with power over you.',
+    'Family, friendship, or romance.',
+    'Impending loss, predictable but hard to avoid.',
+    'Clarity or revelation.',
+    'Confusion or misunderstanding.',
+    'Conflict; not always physical.',
+    'Protection; not always physical.',
+    'A new goal; a distant or dynamic objective.',
+    'Powerful technology or magic.',
+]
 
 const scene_complication_values = [
   '',
@@ -477,7 +492,7 @@ const hex_event = () => {
 }
 
 const rune = () => {
-  value = random.int(0, 23)
+  value = random.int(0, runes.length-1)
   return {
     'rune': runes[value],
     'label': runes_label[value],
@@ -486,7 +501,7 @@ const rune = () => {
 }
 
 const element = () => {
-  value = random.int(0, 3)
+  value = random.int(0, elements.length-1)
   return {
     'element': elements[value],
     'label': elements_label[value],
@@ -502,7 +517,7 @@ const weather = () => {
 }
 
 const direction = () => {
-  value = random.int(0, 8)
+  value = random.int(0, directions.length-1)
   return {
     'direction': directions[value],
     'label': directions_label[value],
@@ -510,10 +525,32 @@ const direction = () => {
 }
 
 const dice100 = () => {
-    value = dice(100).toString()
-    if (value === '100') return '00'
-    if (value.length === 1) return '0' + value
-    return value
+  value = dice(100).toString()
+  if (value === '100') return '00'
+  if (value.length === 1) return '0' + value
+  return value
+}
+
+const symbols = () => {
+  values = Array.from(Array(symbols_options.length).keys()).sort(() => 0.5 - Math.random()).slice(0, 3);
+
+  return {
+    'first': {
+      'symbol': symbols_options[values[0]],
+      'label': symbols_options_label[values[0]],
+      'meaning': symbols_options_meaning[values[0]],
+    },
+    'second': {
+      'symbol': symbols_options[values[1]],
+        'label': symbols_options_label[values[1]],
+        'meaning': symbols_options_meaning[values[1]],
+    },
+    'third': {
+      'symbol': symbols_options[values[2]],
+      'label': symbols_options_label[values[2]],
+      'meaning': symbols_options_meaning[values[2]],
+    },
+  }
 }
 
 const generator = () => {
@@ -532,6 +569,7 @@ const generator = () => {
     'element': element(),
     'weather': weather(),
     'direction': direction(),
+    'symbols': symbols(),
     'scene_complication': scene_complication(),
     'altered_scene': ( dice(6) >= 5 ? altered_scene() : '' ),
     'oracle_yes_no_likely': yes_no(3) + yes_no_mod(),
@@ -649,6 +687,10 @@ app.get('/oracle', (request, response) => {
     oracle.hex_event.random_event.involving.value = response.__(oracle.hex_event.random_event.involving.value)
     oracle.hex_event.random_event.involving.suit = response.__(oracle.hex_event.random_event.involving.suit)
   }
+  oracle.direction.label = response.__(oracle.direction.label)
+  oracle.symbols.first.label = response.__(oracle.symbols.first.label)
+  oracle.symbols.second.label = response.__(oracle.symbols.second.label)
+  oracle.symbols.third.label = response.__(oracle.symbols.third.label)
   response.json(oracle)
 })
 
